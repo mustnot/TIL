@@ -14,8 +14,8 @@
 ```python
 app = Flask(__name__)
 app.config.update(
-	DEBUG=True,
-	SECRET_KEY='abcde..'
+    DEBUG=True,
+    SECRET_KEY='abcde..'
 )
 ```
 
@@ -34,18 +34,18 @@ app.config.update(
 ```python
 # config.py
 class Config(object):
-	DEBUG = False
-	TESTING = False
-	DATABASE_URL = 'sqlite://:memory:'
+    DEBUG = False
+    TESTING = False
+    DATABASE_URL = 'sqlite://:memory:'
 
 class ProductionConfig(Config):
-	DATABASE_URL = 'mysql://user@localhost/db'
+    DATABASE_URL = 'mysql://user@localhost/db'
 
 class DevelopmentConfig(Config):
-	DEBUG = True
+    DEBUG = True
 
 class TestingConfig(Config):
-	TESTING = True
+    TESTING = True
 ```
 
 예시로 `config.py`에 위와 같이 여러 설정을 작성한 후에 아래와 같이 한 줄의 코드로 활성화 할 수 있다.
