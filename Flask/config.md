@@ -24,12 +24,7 @@ app.config.update(
 
 > ⛔ 모든 설정 파일이 그러하듯이 공개된 소스 저장소 Git과 같은 잘못 커밋하게 될 경우, 위험하니 각별히 주의하자 !!
 
-1. `Distribute`로 설정하기
-* to be continue..
-
-2. `object`로 설정하기
-
-`object`로 설정하기는 여러 가지 방법이 있지만,  `Class`와 상속을 통해서 설정을 활성화 할 수 있다. 
+개발 환경마다 다르겠지만, Flask 공식 문서에서는 `Class`와 상속을 통해 설정 할 수 있는 방법을 잘 설명하고 있다. 살펴보면, `Production`, `Development`, `Testing` 세 개로 나누어 설정해 놓았고, 가장 위에 `Base`가 되는 `Config`를 상속받아 설정값을 입력하고 있다.
 
 ```python
 # config.py
