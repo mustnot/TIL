@@ -25,8 +25,6 @@ class Node:
         self.next = next
 ```
 
-<br>
-
 ### Node와 Node 연결하기 (포인터 활용)
 
 ```python
@@ -36,23 +34,22 @@ node1.next = Node2
 head = node1
 ```
 
-<br>
 
 ### 링크드 리스트로 데이터 추가하기
 
 ```python
 def add(data):
-	node = head
-	while node.next:
-		node = node.next
-	node.next = Node(data)
+    node = head
+    while node.next:
+        node = node.next
+    node.next = Node(data)
 ```
 
 ```python
 node1 = Node(1)
 head = node1
 for index in range(2, 10):
-	add(index)
+    add(index)
 ```
 
 <br>
@@ -75,7 +72,6 @@ for index in range(2, 10):
 
 - 연결하고자 하는 연결 정보를 찾아 해당 연결 정보 앞 뒤에 데이터를 추가해야함
 
-<br>
 
 ### 특정 노드를 삭제
 
@@ -182,7 +178,6 @@ class NodeMgmt:
 
 ```
 
-<br>
 
 ### 연습 : 위 코드에서 노드 데이터가 특정 숫자인 노드 앞과 뒤에 데이터를 추가하는 함수 만들고, 테스트해보기
 
