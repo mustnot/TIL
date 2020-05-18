@@ -4,6 +4,7 @@
 
 <p align="center">
   <img width="460" height="300" src="https://user-images.githubusercontent.com/52126612/82210485-24aa6d80-994a-11ea-9b59-c9e806492d63.png">
+</p>
 
 ## ✔용어 정리
 
