@@ -2,8 +2,8 @@
 
 > 키(Key)에 데이터(Value)를 저장하는 데이터 구조로 Key를 통해 데이터를 받아올 수 있으므로, 속도가 획기적으로 빨라짐 - Python의 Dictionary 타입이 대표적인 예
 
-
-![hash_table](https://user-images.githubusercontent.com/52126612/82210485-24aa6d80-994a-11ea-9b59-c9e806492d63.png)
+<p align="center">
+  <img width="460" height="300" src="https://user-images.githubusercontent.com/52126612/82210485-24aa6d80-994a-11ea-9b59-c9e806492d63.png">
 
 ## ✔용어 정리
 
