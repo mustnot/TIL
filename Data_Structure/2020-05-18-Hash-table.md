@@ -53,18 +53,18 @@
 hash_table = list([0 for i in range(8)])
 
 def get_key(data):
-	return hash(data)          # 문자를 정수로 리턴
+    return hash(data)          # 문자를 정수로 리턴
 
 def hash_function(key):
-	return key % 8
+    return key % 8
 
 def save_data(data, value):
-	hash_address = hash_function(get_key(data))
-	hash_table[hash_address] = value
+    hash_address = hash_function(get_key(data))
+    hash_table[hash_address] = value
 
 def read_data(data):
-	hash_address = hash_function(get_key(data))
-	return hash_table[hash_address]	
+    hash_address = hash_function(get_key(data))
+    return hash_table[hash_address]	
 ```
 
 ## 연습 2 : Chaining 기법으로 충돌 해결 코드 추가
@@ -158,9 +158,9 @@ def read_data(data):
 import hashlib
 
 def get_key(data):
-	hash_object = hashlib.sha1()
-	hash_object.update(data.encode())
-	return hash_object.hexdigest()
+    hash_object = hashlib.sha1()
+    hash_object.update(data.encode())
+    return hash_object.hexdigest()
 
 get_key('test')    # a94a8fe5ccb19ba61c4c0873d391e987982fbbd3
 ```
@@ -171,9 +171,9 @@ get_key('test')    # a94a8fe5ccb19ba61c4c0873d391e987982fbbd3
 import hashlib
 
 def get_key(data):
-	hash_object = hashlib.sha256()
-	hash_object.update(data.encode())
-	return hash_object.hexdigest()
+    hash_object = hashlib.sha256()
+    hash_object.update(data.encode())
+    return hash_object.hexdigest()
 
 get_key('test')    # 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
 ```
