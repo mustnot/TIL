@@ -46,10 +46,10 @@
 
 ```python
 def sigma(n):
-		total = 0
-		for i in range(1, n+1):
-				total += i
-		return total
+    total = 0
+    for i in range(1, n+1):
+            total += i
+    return total
 ```
 
 1. Total 변수 설정 후 0을 저장
@@ -61,7 +61,7 @@ def sigma(n):
 
 ```python
 def sigma(n):
-	return int(n * (n +1) / 2)
+    return int(n * (n +1) / 2)
 ```
 
 1. n 값을 받자마자 Total 바로 계산  ← 결국 1번의 계산 (반복문이 없음)
