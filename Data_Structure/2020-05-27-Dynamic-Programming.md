@@ -44,26 +44,26 @@
 ```python
 # fibonachi (recursive call)
 def fibonachi(n):
-	if n <= 1:
-		return n
-	return fibonachi(n-1) + fibonachi(n-2)
+    if n <= 1:
+        return n
+    return fibonachi(n-1) + fibonachi(n-2)
 
 # fibonachi memoization 
 # my code
 def fibonachi_memo(n):
-	fibonachi_db = [1 if ix == 1 else 0 for ix in range(n)]
-	
-	for ix in range(2, n+1):
-		fibonachi_db[ix] = fibonachi_db[ix-1] + fibonachi_db[ix-2]
-	return fibonachi_db[n]
+    fibonachi_db = [1 if ix == 1 else 0 for ix in range(n)]
+    
+    for ix in range(2, n+1):
+        fibonachi_db[ix] = fibonachi_db[ix-1] + fibonachi_db[ix-2]
+    return fibonachi_db[n]
 
 # study code
 def fibo_dp(num):
-	cache = [ 0 for index in range(num + 1)]
-	cache[0] = 0
-	cache[1] = 1
-	
-	for index in range(2, num + 1):
-		cache[index] = cache[index - 1] + cache[index - 2]
-	return cache[num]
+    cache = [ 0 for index in range(num + 1)]
+    cache[0] = 0
+    cache[1] = 1
+    
+    for index in range(2, num + 1):
+        cache[index] = cache[index - 1] + cache[index - 2]
+    return cache[num]
 ```
