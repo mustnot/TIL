@@ -38,7 +38,6 @@
 <p align="center">
   <img width="460" height="180" src="https://user-images.githubusercontent.com/52126612/83019044-4057f700-a061-11ea-8d31-14dfad6c22aa.png">
 </p>
-![Untitled](https://user-images.githubusercontent.com/52126612/83019044-4057f700-a061-11ea-8d31-14dfad6c22aa.png)
 
 
 ```python
@@ -47,7 +46,8 @@ def fibonachi(n):
     if n <= 1:
         return n
     return fibonachi(n-1) + fibonachi(n-2)
-
+```
+```python
 # fibonachi memoization 
 # my code
 def fibonachi_memo(n):
@@ -56,7 +56,8 @@ def fibonachi_memo(n):
     for ix in range(2, n+1):
         fibonachi_db[ix] = fibonachi_db[ix-1] + fibonachi_db[ix-2]
     return fibonachi_db[n]
-
+```
+```python
 # study code
 def fibo_dp(num):
     cache = [ 0 for index in range(num + 1)]
