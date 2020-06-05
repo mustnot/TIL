@@ -1,6 +1,6 @@
-## Bisection-Algorithm
+## Bisection-Algorithm Practice 1
 
-### 연습 1. Programmers > 이분 탐색 > 예산
+### Programmers > 이분 탐색 > 예산
 > ✔ feedback : 두 가지 경우를 감안하지 못하고 작성한게 시간이 걸린 원인이였다. 첫번 째는 최소값을 예산의 최소값으로 잡았는데, 그 아래의 값이 최대 예산일 수 있다는 점, 두번 재는 예산의 합이 총 예산의 합보다 작을 수 있다는 점 무작정 짜지말고 한번 쯤 고민해볼 것 !
 
 |정확성|효율성|합계|
