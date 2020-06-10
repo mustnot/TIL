@@ -1,5 +1,4 @@
-## Basic Structure Algorithm Practice
-
+## Basic Data Structure Algorithm Practice
 
 ### 큐, 구현, 그리디 - 프린터 큐 - 난이도 하
 > ✔ 테스트 케이스 8개 정도 찾아서 맞췄지만, 20개 중 8개가 틀림, 경우의 수를 한번 더 생각해봐야겠음. (나중에 다시 보기)
