@@ -1,4 +1,4 @@
-## Basic Structure Algorithm Practice
+## Basic Data Structure Algorithm Practice
 
 ### 배열, 구현 - 음계 - 난이도 하
 
