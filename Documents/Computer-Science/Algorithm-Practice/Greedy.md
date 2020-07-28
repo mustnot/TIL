@@ -1,6 +1,4 @@
-## Basic Data Structure Algorithm Practice
-
-### 큐, 구현, 그리디 - 프린터 큐 - 난이도 하
+## 큐, 구현, 그리디 - 프린터 큐
 > ✔ 테스트 케이스 8개 정도 찾아서 맞췄지만, 20개 중 8개가 틀림, 경우의 수를 한번 더 생각해봐야겠음. (나중에 다시 보기)
 ```python
 import queue
@@ -29,8 +27,7 @@ def solution(priorities, location):
 
 <br>
 
-
-### 스택, 구현, 그리디 - 키로거 - 난이도 중
+## Q. 스택, 구현, 그리디 - 키로거
 > ✔ pop() 전에 스택 안에 데이터가 존재하는지 확인 꼭 필요 !
 
 ```python
@@ -53,3 +50,20 @@ def solution(commands):
     left.reverse()
     print(''.join(result + left))
 ```
+
+<br>
+
+## Q. 점프와 순간이동
+```python
+def solution(n):
+    ans = 0
+    
+    while n > 0:
+        jump = n % 2
+        n -= jump
+        n = n // 2
+        ans += jump
+
+    return ans
+```
+
