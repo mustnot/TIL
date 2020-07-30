@@ -11,6 +11,23 @@ def solution(n):
         answer = rules[mod] + answer
     return answer
 ```
+<br>
+
+## Q. 완수하지 않은 선수
+> 다 지워가면서 마지막에 남은 선수만 리턴하는 방식으로 풀었음.
+
+```python
+from collections import defaultdict
+
+def solution(participant, completion):
+    participants = defaultdict(int)
+    while participant:
+        participants[participant.pop()] += 1
+    while completion:
+        participants[completion.pop()] -= 1
+
+    return sorted(participants.items(), key=lambda x: x[1], reverse=True)[0][0]
+```
 
 <br>
 
