@@ -1,4 +1,4 @@
-## Django Tutorial
+## Django Tutorial Part 1
 
 ```bash
 $ python -m django --version
@@ -154,10 +154,3 @@ urlpatterns = [
 **kwargs** : 임이의 키워드 인수들은 목표한 view에 사전형으로 전달됩니다.
 
 **name** : URL에 이름을 지으면, 템플릿에 포함한 Django 어디에서나 명확하게 참조할 수 있습니다. 그렇기에 이 기능을 사용할 경우, 단 하나의 파일만 수정해도 project 내의 모든 URL 패턴을 바꿀 수 있습니다.
-
-
-
-
-
-
-
