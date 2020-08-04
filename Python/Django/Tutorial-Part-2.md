@@ -1,4 +1,4 @@
-## Django Tutorial Part 1
+## Django Tutorial Part 2
 
 ### 데이터 베이스 설치
 
@@ -142,6 +142,8 @@ CREATE INDEX "polls_choice_question_id_c5b4b260" ON "polls_choice" ("question_id
 COMMIT;
 ```
 
+> python manage.py check 명령어를 통해 마이그레이션을 수행하거나 데이터베이스를 건들지 않고도 프로젝트의 문제를 확인할 수 있음 (like nginx -t)
+
 ```bash
 $ python manage.py migrate
 Operations to perform:
@@ -158,3 +160,63 @@ Running migrations:
 2. `python manage.py makemigrations`를 통해 변경사항에 대한 마이그레이션을 만든다.
 3. `python manage.py sqlmigration polls 0001` DB에 대한 변경사항이 있을 경우 사용 (때로는 생략)
 4. `python manage.py migrate` 명령어를 통해 변경사항을 데이터베이스에 적용
+
+
+
+<br>
+
+몇 가지 모델에 메서드를 추가한 후 마지막 모델 코드
+
+```python
+import datetime
+from django.db import models
+from django.utils import timezone
+
+
+class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('date published')
+
+    def __str__(self):
+        return self.question_text
+
+    def was_published_recently(self):
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.choice_text
+```
+
+
+
+### Django 관리자
+
+> 직원들이나 고객들이 컨텐츠를 수정하기 위한 관리자 사이트를 만드는 것은 창의적일 필요없는 지루한 작업이다. 이러한 이유로 Django에서는 모델에 대한 관리용 인터페이스를 모두 자동으로 생성합니다.
+
+먼저 관리 사이트에 로그인하여 관리할 수 있는 사용자를 생성해야한다.
+
+```bash
+$ python manage.py createsuperuser
+Username: 
+Email address: 
+Password:
+Password (again):
+Superuser created successfully.
+```
+
+생성된 관리자를 `http://localhost:8000/admin` 에 접속한 후 로그인을 하면 관리 기능을 실행할 수 있다. 만약 생성된 `app` 여기서는 `polls app` 을 관리 사이트에서 변경 가능하도록 하기 위해서는 다음과 같은 작업이 필요하다.
+
+```python
+# polls/admin.py
+from django.contrib import admin
+from .models import Question
+
+admin.site.register(Question)
+```
+
