@@ -1,4 +1,4 @@
-# Javascript Tutorial 1 - Objects
+# Javascript - Objects
 
 >  ℹ️ [모던 Javascript 튜토리얼](https://ko.javascript.info/)을 통해 공부한 내용을 정리한 글이다. 정리할 내용은 다음과 같다.
 >
