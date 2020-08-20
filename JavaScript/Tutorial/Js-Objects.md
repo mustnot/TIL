@@ -1,15 +1,7 @@
 # Javascript - Objects
 
->  ℹ️ [모던 Javascript 튜토리얼](https://ko.javascript.info/)을 통해 공부한 내용을 정리한 글이다. 정리할 내용은 다음과 같다.
+>  ℹ️ [모던 Javascript 튜토리얼](https://ko.javascript.info/)을 통해 공부한 내용을 정리한 글로 Objects 와 관련된 내용이다. 계속해서 추가할 예정
 >
->  * 객체 : Objects
->  * 참조에 의한 객체 복사 : Object copying, references
->  * 가비지 컬렉션 : Garbage collection
->  * 메서드와 "this" : Object methods, "this"
->  * "new" 연산자와 생성자 함수 : Constructor, operator "new"
->  * 옵셔널 체이닝 '?.' : Optional chaining
->  * 심볼형 : Symbol type
->  * 객체를 원시형으로 변환하기 : Object to primitive conversion
 
 <br>
 
@@ -551,3 +543,67 @@ boolean은 `hint`가 없다 그 이유는 모든 객체는 그저 `true` 이기 
 3. 1, 2에 해당하지 않고, `number`나 `default`라면,
     * `obj.valueOf()`나 `obj.toString()` 을 호출한다. (존재하는 메서드만 실행)
 
+<br>
+
+<br>
+
+## Objects.keys, values, entries
+
+* `Objects.keys(obj)` : 키가 담긴 배열 반환
+* `Objects.values(obj)` : 값이 담긴 배열 반환
+* `Objects.entries(obj)` : `key, value` 쌍이 담긴 배열 반환
+
+`Map, Set, Array` 에 적용되는 `keys(), values(), entries()` 와는 아래 같은 차이점이 존재
+
+| 분류      | map (맵)      | objects (객체)      |
+| --------- | ------------- | ------------------- |
+| 호출 문법 | `map.keys()`  | `Objects.keys(obj)` |
+| 반환 값   | iterable 객체 | Array               |
+
+예시 :
+
+```javascript
+let user = {
+    name: "John",
+    age: 30
+};
+```
+
+* `Objects.keys(user) = ["name", "age"]`
+* `Objects.values(user) = ["John", 30]`
+* `Objects.entries(user) = [ ["name", "John"], ["age", 30] ]`
+
+```javascript
+// Objects.values 예시
+for (let value of Object.values(user)) {
+  alert(value); // John, 30
+}
+```
+
+> ⚠️ Objects.keys, values, entries는 심볼형 프로퍼티를 무시한다.
+
+<br>
+
+### 객체 변환하기
+
+기존 객체에는 `map`, `filter` 같은 배열 전용 메서드를 사용할 수 없습니다. 하지만, `Objects.entries`와 `Objects.fromEntries` 를 순차적으로 적용하면 객체에도 배열 전용 메서드를 사용할 수 있다.
+
+1. `Objects.entries(obj)` 를 사용해 객체의 키-쌍 요소를 갖는 배열을 얻는다.
+2. 1에서 만든 배열에 `map` 등의 배열 전용 메서드를 적용한다.
+3. 2에서 반환된 배열에 `Objects.fromEntries(array)`를 적용해 다시 객체로 되돌린다.
+
+예시 :
+
+```javascript
+let prices = {
+  banana: 1,
+  orange: 2,
+  meat: 4,
+};
+
+let doublePrices = Object.fromEntries(
+  Object.entries(prices).map(([key, value]) => [key, value*2])
+);
+
+alert(doublePrices.meat); // 8
+```
