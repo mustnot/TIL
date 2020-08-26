@@ -316,3 +316,565 @@ alert( currentUser.name );
 alert( window.currentUser.name );
 ```
 
+<br>
+
+<br>
+
+## 객체로서의 함수와 기명 함수 표현식
+
+자바스크립트에서 함수는 값으로 취급된다. 또한 모든 값은 자료형을 가지고 있는데, 그럼 함수의 자료형은 무엇일까? **함수의 자료형은 객체**로 함수는 호출 가능한(callable) '행동 객체'로 이해하면 쉽다. 자바스크립트에서 함수는 호출 할 수 있을 뿐만 아니라 객체처럼 함수에 프로퍼티를 추가, 제거하거나 참조를 통해 전달할 수도 있다.
+
+<br>
+
+### `name` 프로퍼티
+
+함수 객체엔 몇 가지 쓸만한 프로퍼티가 있는데, `name` 프로퍼티를 사용하면 함수 이름을 가져올 수 있다.
+
+```javascript
+function sayHi() {
+    alert("Hi!");
+}
+alert(sayHi.name); // sayHi
+```
+
+함수 객체에 이름을 할당해주는 로직은 아주 똑똑해서 익명 함수라도 자동으로 이름이 할당된다.
+
+이러한 이름을 명세서에서 정의되기를 'contextual name'이라고 부른다. 이름이 없는 함수의 이름을 지정할 땐 컨텍스트에서 이름을 가져온다. 객체 메서드의 이름도 `name` 프로퍼티를 이용해 가져올 수 있다.
+
+```javascript
+let user = {
+    sayHi() {
+        // ...
+    }
+}
+console.log(user.sayHi.name);
+```
+
+하지만, 객체 메서드 이름은 함수처럼 <u>자동 할당</u>되지 않는다. 적절한 이름을 추론하는게 불가능한 상황이 있는데, 이런 경우에는 `name` 프로퍼티엔 빈 문자열이 저장된다.
+
+```javascript
+let arr = [function() {}];
+alert(arr[0].name); // <빈 문자열>
+```
+
+<br>
+
+### `length` 프로퍼티
+
+내장 프로퍼티 `length`는 함수 매개변수의 개수를 반환한다. (단, 나머지 매개변수는 개수에 포함되지 않는다.) 
+
+```javascript
+function f1(a) {}
+function f2(a, b) {}
+function many(a, b, ...more) {}
+
+alert(f1.length); // 1
+alert(f2.length); // 2
+alert(many.length); // 2
+```
+
+`length` 프로퍼티는 다른 함수 안에서 동작하는 함수의 [타입을 검사(type introspection)](https://en.wikipedia.org/wiki/Type_introspection) 할 때도 종종 사용된다. 질문에 쓰일 `question`과 질문에 대한 답에 따라 호출할 임의의 수를 `handler` 함수를 함께 받는 함수 `ask`를 예시로 들면, 사용자가 답을 제출하면 `ask` 핸들러 함수를 호출한다. 이때 우리는 두 종류의 핸들러 함수를 `ask`에 전달할 수 있다.
+
+* 인수가 없는 함수로, 사용자가 OK를 클릭했을 때만 호출됨
+* 인수가 있는 함수로, 사용자가 OK를 클릭하든 Cancel을 클릭하든 호출됨
+
+그리고 `handler.length` 프로퍼티를 사용하면 상황에 맞는 `handler`를 호출할 수 있다.
+
+```javascript
+function ask(question, ...handlers) {
+  let isYes = confirm(question);
+
+  for(let handler of handlers) {
+    if (handler.length == 0) {
+      if (isYes) handler();
+    } else {
+      handler(isYes);
+    }
+  }
+
+}
+
+// 사용자가 OK를 클릭한 경우, 핸들러 두 개를 모두 호출함
+// 사용자가 Cancel을 클릭한 경우, 두 번째 핸들러만 호출함
+ask("질문 있으신가요?", () => alert('OK를 선택하셨습니다.'), result => alert(result));
+```
+
+인수의 종류에 따라 인수를 다르게 처리하는 방식을 프로그래밍 언어에선 [다형성(polymorphism)](https://en.wikipedia.org/wiki/Polymorphism_(computer_science)) 이라 부른다.
+
+<br>
+
+### 커스텀 프로퍼티
+
+함수에 자체적으로 만든 프로퍼티를 추가할 수 있습니다.
+
+예시 :
+
+```javascript
+function sayHi() {
+  alert("Hi");
+  
+  sayHi.counter++;
+}
+sayHi.counter = 0; // 초기값 설정
+
+sayHi();
+sayHi();
+
+console.log(sayHi.counter);
+// 나중에 이런 식으로 동일 함수를 n번 실행 시 막는 방식에 사용될 수 있을 것 같다.
+```
+
+> **⚠️ 프로퍼티는 변수가 아니다.**
+>
+> `sayHi.counter = 0`과 같이 함수에 프로퍼티를 할당해도 함수 내 지역변수 `counter`가 만들어지지 않는다. `counter` 프로퍼티와 변수 `let counter`는 전혀 관계가 없다.
+>
+> 프로퍼티를 저장하는 것처럼 함수를 객체와 같이 다룰 수 있지만, 이는 실행에 아무 영향을 끼치지 않는다. 변수는 함수 프로퍼티가 아니고 함수 프로퍼티는 변수가 아니기 때문에 둘 사이에는 공통점이 없다.
+
+클로저는 함수 프로퍼티로 대체할 수 있다. 앞서 살펴본 바 있는 `counter` 함수를 함수 프로퍼티를 사용해 바꿔보면 다음과 같다.
+
+```javascript
+function makeCounter() {
+  // let count = 0 대신 아래 메서드(프로퍼티)를 사용함
+  function counter() {
+    return counter.count++;
+  };
+
+  counter.count = 0;
+  return counter;
+}
+let counter = makeCounter();
+
+alert( counter() ); // 0
+alert( counter() ); // 1
+```
+
+함수 안에 `counter` 함수를 만들어 `count` 프로퍼티가 `makeCounter()` 함수 안에서 존재하도록 했다고 보인다. 그렇다면 이 방법이 클로저를 사용하는 것보다 나은 방법일까?
+
+두 방법의 차이점은 `count` 값이 외부 변수에 저장되어 있는 경우 드러난다. 클로저를 사용한 경우 외부 코드에서 `count`에 접근할 수 없어 오직 중첩함수 내에서만 `count` 값을 수정할 수 있다. 반면 함수 프로퍼티를 사용해 `count` 함수에 바인딩시킨 경우엔 다음 예시와 같이 외부에서 값을 수정할 수 있다.
+
+```javascript
+function makeCounter() {
+  function counter() {
+    return counter.count++;
+  };
+
+  counter.count = 0;
+  return counter;
+}
+let counter = makeCounter();
+
+counter.count = 10;
+alert( counter() ); // 10
+```
+
+<br>
+
+<br>
+
+## `new Function` 문법
+
+함수 표현식과 함수 선언문 외 함수를 만드는 방법이 하나 더 있는데, 잘 사용되지 않는 방법이지만 대안이 없을 때 사용된다.
+
+### 문법
+
+```javascript
+let func = new Function ( [arg1, arg2, ..., argN], functionBody );
+```
+
+예시 :
+
+```javascript
+let sum = new Function ( 'a', 'b', 'return a + b' );
+```
+
+```javascript
+let sayHi = new Function ( 'alert("Hi!")' );
+```
+
+<br>
+
+### 클로저
+
+```javascript
+function getFunc() {
+  let value = "test";
+  let func = new Function('alert(value)');
+  return func();
+}
+getFunc(); // ReferenceError: value is not defined
+```
+
+이런 식으로 `new Function`으로 함수를 만들면 함수가 참조하고 있는 외부 렉시컬 환경의 `value` 변수를 참조할 수 없다. 아래와 같이 일반적인 함수 할당으로 사용 가능하다.
+
+```javascript
+function getFunc() {
+  let value = 'test';
+  let func = function() { alert(value) };
+  return func();
+}
+getFunc();
+```
+
+<br>
+
+<br>
+
+## setTimeout과 setInterval을 이용한 호출 스케줄링
+
+개발을 하다보면 일정 시간이 지난 후에 원하는 함수를 예약 실행(호출)할 수 있게 하고 싶은데, 이 때 이용하는 것이 '호출 스케줄링(scheduling a call)'이다. 다음 두 가지 방법이 있다.
+
+* `setTimeout`을 이용해 일정 시간이 지난 후에 함수를 실행하는 방법
+* `setInterval`을 이용해 일정 시간 간격을 두고 함수를 실행하는 방법
+
+자바스크립트 명세서엔 `setTimeout`과 `setInterval`이 명시되어 있지 않지만 시중에 나와있는 모든 브라우저, Node.js를 포함한 자바스크립트 호스트 환경 대부분이 이와 유사한 메서드와 내부 스케줄러를 지원한다.
+
+<br>
+
+### setTimeout
+
+문법 :
+
+```javascript
+let timerId = setTimeout(func|code, [delay], [arg1], [arg2], ...)
+```
+
+* `func|code` : 실행하고자 하는 코드로, 함수 또는 문자열 형태이다. 대개는 이 자리에 함수가 들어가며, 하위 호환성을 위해 문자열도 받을 수 있게 해놓았지만, 추천하진 않는다.
+* `delay` : 실행 전 대기 시간으로, 단위는 밀리초(milisecond, 1000ms = 1s)로 기본값은 0이다.
+* `arg1, arg2, ...` : 함수에 전달할 인수들로 IE9 이하에선 지원하지 않는다.
+
+예시 :
+
+```javascript
+function sayHi() {
+  alert('Hi!');
+}
+setTimeout(sayHi, 1000); // 1초 뒤 실행
+
+function sayHi2(who, phrase) {
+  alert( `Hi! ${who} ${phrase}` );
+}
+setTimeout(sayHi2, 1000, "John", "GoodMorning!") //
+
+// 익명 화살표 함수를 이용한 방법
+setTimeout(() => alert('안녕하세요.'), 1000);
+```
+
+#### clearTimeout으로 스케줄링 취소
+
+`setTimeout`을 호출하면 '타이머 식별자(timer identifier)'가 반환되는데, 스케줄링을 취소하고 싶을 땐 이 식별자(`timerId`)를 사용하면 된다.
+
+예시 :
+
+```javascript
+let timerId = setTimeout(() => alert('안녕하세요.'), 10000);
+clearTimeout(timerId)
+```
+
+<br>
+
+###  setInterval
+
+`setInterval` 메서드는 `setTimeout`과 동일한 문법을 사용한다.
+
+```javascript
+let timerId = setTimeout(func|code, [delay], [arg1], [arg2], ...)
+```
+
+예시 :
+
+```javascript
+let timerId = setInterval(() => alert("tictoc"), 2000);
+setTImeout(() => { clearInterval(timerId); alert('stop'); }, 5000);
+```
+
+<br>
+
+### 중첩 setTimeout
+
+무언가를 일정 간격을 두고 실행하는 방법에는 크게 2가지가 있는데, 하나는 `setInterval`을 이용하는 방법이고, 다른 하나는 아래 예시와 같이 중첩 `setTimeout`을 이용하는 방법이다.
+
+```javascript
+let timerId = setTimeout(function tick() {
+  alert("tick");
+  timerId = setTimeout(tick, 2000);
+}, 2000);
+```
+
+<br>
+
+### 대기시간이 0인 setTimeout
+
+`setTimeout(func, 0)` 혹은 `setTimeout(func)`를 사용하면 `setTimeout`의 대기 시간을 0으로 설정할 수 있다. 이렇게 대기 시간을 `0`으로 설정하면 `func`를 '가능한 한' 빨리 실행할 수 있다. 다만, 현재 스케줄링인 스크립트의 처리가 종료된 이후에 스케줄링 함수가 실행된다.
+
+이런 특징을 이용해 현재 스크립트의 실행이 종료된 '직후에' 원하는 함수가 실행될 수 있게 할 수 있다.
+
+예시 :
+
+```javascript
+setTimeout(() => console.log("World"));
+console.log("Hello");
+```
+
+<br>
+
+<br>
+
+## call/apply와 데코레이터, 포워딩
+
+자바스크립트는 함수를 다룰 때 탁월한 유연성을 제공한다. 함수는 이곳저곳 전달될 수 있고, 객체로도 사용될 수 있다. 이번 챕터에선 함수 간에 호출을 어떻게 `포워딩(forwarding)` 하는지, 함수를 어떻게 `데코레이팅(decorating)` 하는지 살펴본다.
+
+<br>
+
+### 코드 변경 없이 캐싱 기능 추가하기
+
+CPU를 많이 잡아먹지만 결과는 안정적인 함수 `slow(x)`가 있다고 가정할 때, 결과가 안정적이라는 말은 `x`가 같으면 호출 결과도 같다는 것을 의미한다. 그리고 만약 `slow(x)`가 자주 호출된다면, 결과를 어딘가에 저장(캐싱)해 재연산에 걸리는 시간을 줄이고 싶을 것이다.
+
+아래 예시는 `slow()` 안에 캐싱 관련 코드를 추가하는 대신, 래퍼 함수를 만들어 캐싱 기능을 추가할 것이고, 이런 식으로 래퍼 함수를 만들면 여러 가지 이점이 있다.
+
+```javascript
+function slow(x) {
+  alert(`slow(${x})을/를 호출`);
+  return x;
+}
+
+function cachingDecorator(func) {
+  let cache = new Map();
+  
+  return function(x) {
+    if (cache.has(x)) {
+      return cache.get(x);
+    }
+    
+    let result = func(x);
+    
+    cache.set(x, result);
+    return result;
+  };
+}
+
+slow = cachingDecorator(slow);
+
+alert( slow(1) ); // slow(1)이 저장되었습니다.
+alert( "다시 호출: " + slow(1) ); // 동일한 결과
+
+alert( slow(2) ); // slow(2)가 저장되었습니다.
+alert( "다시 호출: " + slow(2) ); // 윗줄과 동일한 결과
+```
+
+`cachingDecorator` 같이 인수로 받은 함수의 행동을 변경시켜주는 함수를 데코레이터(decorator)라 부른다. 모든 함수를 대상으로 `cachingDecorator`를 호출 할 수 있는데, 이 때 반환되는 것은 캐싱 래퍼이다. 함수에 `cachingDecorator`를 적용하기만 하면 캐싱이 가능한 함수를 원하는 만큼 구현할 수 있기 때문에 데코레이터 함수는 아주 유용하게 사용된다.
+
+캐싱 관련 코드를 함수 코드와 분리할 수 있기 때문에 함수의 코드가 간결해진다는 장점도 있다.
+
+<br>
+
+### `func.call`을 이용해 컨텍스트 지정하기
+
+위에서 구현한 캐싱 데코레이터는 객체 메서드에 사용하기엔 적합하지 않다. 객체 메서드 `worker.slow()`는 데코레이터 적용 후 제대로 동작하지 않는다.
+
+```javascript
+// worker.slow에 캐싱 기능을 추가해봅시다.
+let worker = {
+  someMethod() {
+    return 1;
+  },
+
+  slow(x) {
+    // CPU 집약적인 작업이라 가정
+    alert(`slow(${x})을/를 호출함`);
+    return x * this.someMethod(); // (*)
+  }
+};
+
+// 이전과 동일한 코드
+function cachingDecorator(func) {
+  let cache = new Map();
+  return function(x) {
+    if (cache.has(x)) {
+      return cache.get(x);
+    }
+    let result = func(x); // (**)
+    cache.set(x, result);
+    return result;
+  };
+}
+
+alert( worker.slow(1) ); // 기존 메서드는 잘 동작합니다.
+
+worker.slow = cachingDecorator(worker.slow); // 캐싱 데코레이터 적용
+
+alert( worker.slow(2) ); // Error: Cannot read property 'someMethod' of undefined
+```
+
+`(*)`으로 표시한 줄에 `this.someMethod` 접근에 실패했기 때문에 에러가 발생했는데, 원인은 `(**)` 표시한 줄에 래퍼가 기존 함수 `func(x)`를 호출하면 `this`가 `undefined`가 되기 때문이다. 말 그대로 `this.someMethod()`에서 `this`가 사라지게 된다.
+
+아래 코드는 비슷한 현상을 나타낸다.
+
+```javascript
+let func = worker.slow;
+func(2);
+```
+
+래퍼가 기존 메서드 호출 결과를 전달하려 했지만, `this`의 컨텍스트가 사라지면서 `this.someMethod`를 더 이상 실행할 수 없게 되었다. 이를 해결하기 위해 먼저, `this`를 명시적으로 고정해 함수를 호출할 수 있게 해주는 특별한 내장 함수 메서드 [func.call(context, …args)](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Function/call)에 대해 알아보자.
+
+문법 :
+
+```javascript
+func.call(context, arg1, arg2, ...)
+```
+
+메서드를 호출하면 메서드의 첫 번째 인수가 `this`, 이어지는 인수가 `func`의 인수가 된 후 `func`를 호출한다. (음 이게 무슨 소리지..)
+
+예시 :
+
+```javascript
+func(1, 2, 3);
+func.call(obj, 1, 2, 3);
+```
+
+```javascript
+function sayHi() {
+  alert(this.name);
+};
+
+let user = { name: "John" };
+sayHi.call( user ); // this = "John"
+```
+
+```javascript
+function say(phrase) {
+  alert( `${this.name}: ${phrase}`);
+}
+let user = { name: "John" };
+say.call( user, "Hello!");
+```
+
+그럼 캐싱을 다시 해보면 아래 코드처럼 변경하면 된다.
+
+```javascript
+// worker.slow에 캐싱 기능을 추가해봅시다.
+let worker = {
+  someMethod() {
+    return 1;
+  },
+
+  slow(x) {
+    alert(`slow(${x})을/를 호출함`);
+    return x * this.someMethod();
+  }
+};
+
+function cachingDecorator(func) {
+  let cache = new Map();
+  return function(x) {
+    if (cache.has(x)) {
+      return cache.get(x);
+    }
+    let result = func.call(this, x); // (*) 수정
+    cache.set(x, result);
+    return result;
+  };
+}
+
+worker.slow = cachingDecorator(worker.slow); // 캐싱 데코레이터 적용
+alert( worker.slow(2) );
+```
+
+1. 데코레이터 적용한 후에 `worker.slow`는 래퍼 `function (x) {...}`가 된다.
+2. `worker.slow(2)`를 실행하면 래퍼는 `2`를 인수로 받고, `this=worker`가 된다.
+3. 결과가 캐시되지 않은 상황이라면, `func.call(this, x)`에서 현재 `this=(worker)`와 인수(`2`)를 원본 메서드에 전달한다.
+
+<br>
+
+### 여러 인수 전달하기
+
+`cachingDecorator`를 다채롭게 해보면, 현재 구조상 하나의 변수만 받을 수 있는데, 만약 복수 인수를 가진 메서드가 있다면 어떻게 해야할까?
+
+```javascript
+let worker = {
+  slow(min, max) {
+    return min + max;
+  }
+};
+
+worker.slow = cachingDecorator(worker.slow)
+```
+
+지금까지는 인수 `x` 하나뿐이었기 때문에, `cache.set(x, result)`로 결과를 저장하고 `cache.get(x)`로 저장된 결과를 불러오기만 하면 되었는데, 이제부터는 `(min, max)`와 같이 인수가 여러 개이고, 이 인수들을 넘겨 호출된 결과를 기억해야한다. 반면에 네이티브 맵은 단일 키만 받는다.
+
+해결 방법은 여러 가지다.
+
+1. 복수 키를 지원하는 맵과 유사한 자료 구조 구현하기 (서드 파티 라이브러리 등을 이용해도 됨)
+2. 중첩 맵을 사용하기. `(max, result)` 쌍 저장은 `cache.set(min)`으로 `result`는 `cache.get(min).get(max)`을 사용해 얻는다. 하지만 키가 많아질 수록 복잡해진다.
+3. 두 값을 하나로 합치기. `맵`의 키로 `"min, max"`와 같이 하나로 사용하여 키로 이용. 또는 여러 값을 하나로 합치는 해싱 함수를 구현해 이용
+
+```javascript
+let worker = {
+  slow(min, max) {
+    alert(`slow(${min},${max})을/를 호출함`);
+    return min + max;
+  }
+};
+
+function cachingDecorator(func, hash) {
+  let cache = new Map();
+  return function() {
+    let key = hash(arguments); // (*)
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+
+    let result = func.call(this, ...arguments); // (**)
+
+    cache.set(key, result);
+    return result;
+  };
+}
+
+function hash(args) {
+  return args[0] + ',' + args[1];
+}
+
+worker.slow = cachingDecorator(worker.slow, hash);
+
+alert( worker.slow(3, 5) ); // 제대로 동작합니다.
+alert( "다시 호출: " + worker.slow(3, 5) ); // 동일한 결과 출력(캐시된 결과)
+```
+
+<br>
+
+### func.apply
+
+위 같이 여러 인수를 사용할 때에는 `func.call` 대신에 `func.apply`를 사용해도 된다. 
+
+문법 :
+
+```javascript
+func.apply(context, args)
+```
+
+`apply`는 `func`의 `this`를 `context`로 고정해주고, 유사 배열 객체인 `args`를 인수로 사용할 수 있게 해준다. 
+
+```javascript
+func.call(context, args1, args2, ...)
+func.apply(context, [arg1, arg2, ...])
+```
+
+약간의 차이가 있다.
+
+* 전개 문법 `...`은 이터러블 `args`를 분해하여 `call`에 전달할 수 있게 해준다.
+* `apply`는 오직 유사 배열 형태의 `args`만 받는다.
+
+이 차이만 빼면 두 메서드는 완전히 동일하게 동작하는데, 인수가 이터러블 형태라면 `call`을 유사 배열 형태라면 `apply`를 사용하면 된다.
+
+배열같이 이터러블이면서 유사 배열인 객체엔 둘 다를 사용할 수 있는데, 대부분의 자바스크립트 엔진은 내부에서 `apply`를 최적화하기 때문에 `apply`를 사용하는 게 좀 더 빠르긴 하다.
+
+이렇게 컨텍스트와 함께 인수 전체를 다른 함수에 전달하는 것을 콜 포워딩이라 한다.
+
+간단한 형태의 콜 포워딩은 다음과 같다.
+
+```javascript
+let wrapper = function() {
+  return func.apply(this, arguments);
+}
+```
+
