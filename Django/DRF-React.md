@@ -44,7 +44,7 @@ class Lead(models.Model):
 ```
 
 ```bash
-$ python manage.py makemigrate leads
+$ python manage.py makemigrations leads
 $ python manage.py migrate
 ```
 
