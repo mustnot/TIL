@@ -1,6 +1,6 @@
 # React Todo App with Typescript
 
-> ../Django/DRF-React-Todo.md 와 이어지는 내용으로 React와 Typescript로 어떻게 프론트 작업을 했는지에 대해 작성했다.
+> ../Django/DRF-React-Todo.md 와 이어지는 내용으로 React와 Typescript로 어떻게 프론트 작업을 했는지에 대해 작성했다. 모든 코드를 정리하는 것보다 코드 중 기억했으면 좋을 것 같은 코드들만 정리했다.
 
 <br>
 
@@ -279,41 +279,6 @@ handleSubmit(e: any) {
 
 <br>
 
+## Comment
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+사실 첫 웹을 만들었는데, 의외로 재미가 있었다. `html` 만을 사용해서 만든 사이트가 아니라, Python Class 같이 코드 짜듯이 만들어서 그런지 좋았는데, 한번 쯤 나만의 사이트를 만들어보는 것도 좋을 것 같다. 다음에는 블로그를 만들어봐도 좋을 것 같다. (도전!)
