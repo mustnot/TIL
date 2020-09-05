@@ -42,7 +42,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         return self.name
-    
+
     def get_short_name(self):
         return self.name
 
@@ -51,18 +51,6 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 ```
 
 2개의 모델이 만들어졌다.
-
-
-
-Django 인증 시스템에 대해 공부해보려고 한다. 사용자 인증과 관련해서 기본적인 개념은 이해하고 있지만, 정확히 어떠한 방식으로 서버에서 작업하는지는 해본 적이 없었다.
-
-
-
-
-
-
-
-
 
 ## Djoser
 
@@ -85,4 +73,3 @@ Djoser는 Django 인증 시스템 라이브러리 중 하나로 REST API로 구�
 - `/jwt/create/`(JSON웹 토큰 인증)
 - `/jwt/refresh/`(JSON웹 토큰 인증)
 - `/jwt/verify/`(JSON웹 토큰 인증)
-
