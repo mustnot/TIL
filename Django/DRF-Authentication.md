@@ -52,11 +52,69 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
 2개의 모델이 만들어졌다.
 
-## Djoser
+### UserAccount
+
+`UserAccount` 모델은 `AbstractBaseUser`와 `PermissionsMixin` 두 개의 클래스를 상속받았다. 각각은 다음과 같은 역할을 한다.
+
+* `AbstractBaseUser`을 상속하여 User 커스텀 모델을 만들면 로그인 아이디로 이메일 주소를 사용하거나 Django 로그인 절차가 아닌 다른 인증 절차를 직접 구현할 수 있다.
+  * 단점으로 시스템 운영 중에 사용자 모델을 변경하는 것이 매우 어려워, 이미 운영 중인 경우에는 기존 모델을 사용하자.
+* `PermissionsMixin`은 사용자와 관리자 권한을 분리할 수 있다.
+
+모델을 살펴보면, 생성된 모델은  `email` 을 계정으로 한다는 것을 볼 수 있다.
+
+<br>
+
+### UserAccountManager
+
+`UserAccountManager` 은  `BaseUserManager`를 상속받아 만들어졌는데, 주로 User를 생성할 때 사용하는 클래스로 두 가지 함수를 갖고 있다.
+
+* `create_user()` 
+* `create_superuser()`
+
+두 가지 유저를 생성할 수 있는 것은 매우 좋은 것 같다. 이전에 프로젝트할 때에는 유저 권한을 분리하기 위해 각각의 함수를 권한과 함께 복잡하게 작성했었는데 이를 단순하게 만들어준다.
+
+<br>
+
+<br>
+
+## Djoser Setup
+
+> ℹ️ Django에서 Authentication 과 관련된 라이브러리가 다양하게 있지만, 보고 있는 예제 영상에서는 Djoser를 사용하고 있어 사용해보고자 한다. (실무에서도 사용될지는 모르겠지만...)
 
 Djoser는 Django 인증 시스템 라이브러리 중 하나로 REST API로 구현되었다. 계정과 관련된 등록, 로그인, 로그아웃, 암호 재설정 및 계정 활성화와 같은 기본 작업을 처리할 수 있는 API를 지원한다. 또한 사용자 지정 모델과 함께 작동하여 토큰 기반 인증에도 사용할 수 있다.
 
-다음과 같은 엔드 포인트를 지원한다.
+설치 순서 :
+
+```bash
+$ pipenv install djoser
+# if using JWT authentication
+$ pipenv install djangorestframework_simplejwt
+# if using third party based authentication e.g. facebook
+$ pipenv install social-auth-app-django
+```
+
+설정 방법 :
+
+```python
+# settings.py
+INSTALLED_APPS = (
+		'django.contrib.auth',
+  	# ...
+  	'rest_framework',
+  	'djoser'
+  	# ...
+)
+```
+
+```python
+# urls.py
+urlpatterns = [
+  # ...
+  url(r'^auth/', include('djoser.urls'))
+]
+```
+
+이와 같이 설정을 모두 마치면 Djoser에서는 다음과 같은 URL을 사용할 수 있다. 
 
 - `/users/`
 - `/users/me/`
@@ -64,12 +122,10 @@ Djoser는 Django 인증 시스템 라이브러리 중 하나로 REST API로 구�
 - `/users/resend_activation/`
 - `/users/set_password/`
 - `/users/reset_password/`
-- `/users/reset_password_confirm/`
-- `/users/set_username/`
-- `/users/reset_username/`
-- `/users/reset_username_confirm/`
-- `/token/login/`(토큰 기반 인증)
-- `/token/logout/`(토큰 기반 인증)
-- `/jwt/create/`(JSON웹 토큰 인증)
-- `/jwt/refresh/`(JSON웹 토큰 인증)
-- `/jwt/verify/`(JSON웹 토큰 인증)
+
+* ....
+
+> 더 많으니 [Djoser - Getting started](https://djoser.readthedocs.io/en/latest/getting_started.html)를 참조
+
+<br>
+
