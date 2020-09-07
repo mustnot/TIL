@@ -9,7 +9,7 @@
 먼저, 유저 모델을 생성한다.
 
 ```python
-# api/models.py
+# auth/models.py
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
@@ -49,8 +49,6 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 ```
-
-2개의 모델이 만들어졌다.
 
 ### UserAccount
 
@@ -114,7 +112,7 @@ urlpatterns = [
 ]
 ```
 
-이와 같이 설정을 모두 마치면 Djoser에서는 다음과 같은 URL을 사용할 수 있다. 
+이와 같이 설정을 모두 마치면 Djoser에서는 다음과 같은 URL을 사용할 수 있다.  ([Djoser - Getting started](https://djoser.readthedocs.io/en/latest/getting_started.html))
 
 - `/users/`
 - `/users/me/`
@@ -125,7 +123,6 @@ urlpatterns = [
 
 * ....
 
-> 더 많으니 [Djoser - Getting started](https://djoser.readthedocs.io/en/latest/getting_started.html)를 참조
-
 <br>
 
+> more..
