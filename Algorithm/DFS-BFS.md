@@ -27,3 +27,23 @@ def solution(begin, target, words):
 ```
 
 <br>
+
+## 타겟 넘버
+
+```python
+import copy
+
+def solution(numbers, target):
+    computations = ['+', '-']
+
+    formulas = [0]
+    for number in numbers:
+        new_formulas = []
+        for formula in formulas:
+            new_formulas.append(formula+number)
+            new_formulas.append(formula-number)
+        formulas = copy.deepcopy(new_formulas)
+    
+    return formulas.count(target)
+```
+
