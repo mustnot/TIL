@@ -63,23 +63,6 @@ def dfs(graph, start_node):
     return visited
 ```
 
-```python
-# my code (using queue)
-import queue
-
-def dfs(graph, start_node):
-    visited, need_visit = [], queue.Queue()
-    need_visit.put(start_node)
-    
-    while need_visit.qsize():
-        node = need_visit.get()
-        if node not in visited:
-            visited.append(node)
-            for children in graph[node]:
-                need_visit.put(node)
-    return visited
-```
-
 <br>
 
 ## 너비 우선 탐색 (BFS : Breadth-First Search) 구현
@@ -109,3 +92,21 @@ def bfs(graph, start_node):
     
     return visited
 ```
+
+```python
+# my code (using queue)
+import queue
+
+def dfs(graph, start_node):
+    visited, need_visit = [], queue.Queue()
+    need_visit.put(start_node)
+    
+    while need_visit.qsize():
+        node = need_visit.get()
+        if node not in visited:
+            visited.append(node)
+            for children in graph[node]:
+                need_visit.put(node)
+    return visited
+```
+
