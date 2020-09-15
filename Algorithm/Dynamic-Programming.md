@@ -54,3 +54,64 @@ def solution(m, n, puddles):
                 roads[y][x] = 0
     return roads[n][m] % 1000000007
 ```
+
+<br>
+
+## Q. N으로 표현
+
+> 오래걸려서 정답이 될 수 없다. 개선이 필요하다.
+
+```python
+def solution(N, number):
+    N = str(N)
+    formulas = [[N]]
+
+    answer = 0
+    while answer < 8:
+        answer += 1
+        for formula in formulas:
+            if eval(''.join(formula)) == number:
+                return answer
+
+        new_formulas = []
+        for formula in formulas:
+            new_formulas.append(formula + [""] + [N])
+            for operation in ["-", "+", "//"]:
+                new_formulas.append(formula + [operation] + [N])
+                new_formulas.append(["("] + eval("".join(formula)) + [")"] + [operation] + [N])
+        formulas = new_formulas
+    return -1
+```
+
+속도는 해결했으나, 정답이 아니다. 괄호가 문제인 것 같은데 해결 방법을 찾아야한다.
+
+```python
+def solution(N, number):
+    # N = str(N)
+    formulas = set([N])
+
+    answer = 0
+    while answer < 8:
+        answer += 1
+        for formula in formulas:
+            if formula == number:
+                return answer
+
+        new_formulas = set()
+        for formula in formulas:
+            new_formulas.add(formula * 10 + N)
+            new_formulas.add(formula * N)
+            
+            new_formulas.add(formula - N)
+            new_formulas.add(N - formula)
+            
+            new_formulas.add(formula + N)
+
+            if N != 0:
+                new_formulas.add(formula // N)
+            if formula != 0:
+                new_formulas.add(N // formula)
+        formulas = new_formulas
+    return -1
+```
+
