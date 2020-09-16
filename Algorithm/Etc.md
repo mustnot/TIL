@@ -137,3 +137,27 @@ def solution(s):
 
     return answer
 ```
+
+<br>
+
+## Q. 두개 뽑아서 더하기
+
+> 2 이상 100 이하의 자연수가 담겨있는 배열에서 두 개의 수를 뽑아 더해 만들 수 있는 모든 수를 정렬하시오.
+
+```python
+def solution(numbers):
+    answer = set()
+    for i in range(len(numbers)-1):
+        for j in range(i+1, len(numbers)):
+            answer.add(numbers[i]+numbers[j])
+    return sorted(answer)
+```
+
+아래는 `itertools.combinations` 를 이용하여 풀었다.
+
+```python
+from itertools import combinations
+
+def solution(numbers):
+    return sorted(set(sum(comb) for comb in combinations(numbers, 2)))
+```
