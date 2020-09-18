@@ -165,3 +165,38 @@ def solution(numbers):
 <br>
 
 ## Q. 삼각 달팽이
+
+> 규칙을 발견하는데 많이 버벅였다. 처음에는 코드가 엄청 길어서 정답을 맞추고도 이래도 되나 싶었는데, 다른 풀이를 참고해서 깔끔하게 수정했다.
+
+```python
+def solution(n):
+    answer = [[0 for j in range(i+1)] for i in range(n)]
+    MAX_N = sum(len(ans) for ans in answer)
+    N, i, j = 1, 0, 0
+    answer[0][0] = 1
+    while N < MAX_N:
+        while True:
+            if (i+1 >= n) or (answer[i+1][j] != 0): break;
+            i+=1
+            N+=1
+            answer[i][j] = N
+
+        while True:
+            if (j+1 >= n) or (answer[i][j+1] != 0): break
+            j+=1
+            N+=1
+            answer[i][j] = N
+
+        while True:
+            if (i-1 < 0) or (j-1 < 0) or (answer[i-1][j-1] != 0): break
+            i-=1
+            j-=1
+            N+=1
+            answer[i][j] = N
+    result = []
+    for ans in answer:
+        result += ans
+        
+    return result
+```
+
