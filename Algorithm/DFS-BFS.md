@@ -128,3 +128,31 @@ def bfs(graph, start_node):
 
 - DFS는 Recursive Function 방식으로 풀었는데, 시작 노드를 설정하면 다음 노드로 이어지게 하는 것이 좋은 방법이라 생각되어 위와 같이 작성했다.
 - BFS는 공부했던 코드에서 `sorted`를 추가했는데, 조건에서 동등한 정점이 있을 경우에는 번호가 작은 것을 먼저 방문한다. 라고 되어 있어 정렬을 추가했다.
+
+<br>
+
+## 네트워크
+
+> set()을 이용해 풀었고, 교집합이 있을 때 합집합하여 연결하도록 했다.
+
+```python
+def solution(n, computers):
+    new_computers = []
+    for computer in computers:
+        new_computer = set()
+        for i, connect in enumerate(computer):
+            if connect: new_computer.add(i)
+        new_computers.append(new_computer)
+    
+    for i in range(n):
+        for j in range(n):
+            if new_computers[i] & new_computers[j]:
+                new_computers[i] = new_computers[i] | new_computers[j]
+                new_computers[j] = new_computers[i] | new_computers[j]
+    answer = []
+    for computer in new_computers:
+        if computer not in answer:
+            answer.append(computer)
+    return len(answer)
+```
+
