@@ -136,3 +136,25 @@ def solution(n, lost, reserve):
                 clothes[i] = 1
 ```
 
+<br>
+
+## Q. 큰 수 만들기 (시간 초과)
+
+> 실행 속도 개선이 필요하다.
+
+틀린 코드 1 : 시간 초과로 런타임이 긴 문제가 있음
+
+```python
+def solution(number, k):
+    answer = []
+    while k > 0:
+        answer = '0'
+        k -= 1
+        for i in range(len(number)-k):
+            new_number = number[:i] + number[i+1:]
+            if new_number > answer:
+                answer = new_number
+        number = answer
+    return answer
+```
+
