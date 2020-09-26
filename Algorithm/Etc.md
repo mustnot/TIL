@@ -209,3 +209,30 @@ def solution(n):
 
     return result
 ```
+
+<br>
+
+## Q. 90도 회전
+
+> 문제는 아니지만, 문제 풀면서 기억했으면 했던 코드이다.
+
+```python
+# 반시계방향
+def rotate_90_degree_anticlckwise(matrix):
+    new_matrix = []
+    for i in range(len(matrix[0]), 0, -1):
+        new_matrix.append(list(map(lambda x: x[i-1], matrix)))
+
+    return new_matrix
+
+# 시계방향
+def rotate_90_degree_clckwise(matrix):
+    new_matrix = []
+    for i in range(len(matrix[0])):
+        li = list(map(lambda x: x[i], matrix))
+        li.reverse()
+        new_matrix.append(li)
+
+    return new_matrix
+```
+
