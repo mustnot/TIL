@@ -243,3 +243,33 @@ def solution(food_times, k):
         return -1
 ```
 
+<br>
+
+## Q. 매칭 점수 (2019)
+
+> 처음 해당 페이지의 URL을 가져오는 regex가 잘못되어 실패하는 경우가 있었다.
+
+```python
+import re
+
+url_regex = re.compile('\<meta property\=\"og\:url\" content\=\"https\:\/\/(\S*)"', re.I)
+
+def solution(word, pages):
+    page_scores = {url_regex.search(page).group(1): [ix, 0, 0, 0] for ix, page in enumerate(pages)}
+
+    for page in pages:
+        url = url_regex.search(page).group(1)
+
+        base_score = re.findall("([a-z]+)", page.lower(), flags=re.IGNORECASE).count(word.lower())
+        page_scores[url][1] = base_score
+        external_links = re.findall(f'<a href="https\:\/\/(\S*)"', page, re.I)
+        print(external_links)
+        page_scores[url][2] = len(external_links)
+
+        for link in external_links:
+            if link in page_scores:
+                page_scores[link][3] += base_score / len(external_links)
+    
+    return sorted(page_scores.items(), key=lambda v: v[1][1] + v[1][3], reverse=True)[0][1][0]
+```
+
