@@ -273,3 +273,32 @@ def solution(word, pages):
     return sorted(page_scores.items(), key=lambda v: v[1][1] + v[1][3], reverse=True)[0][1][0]
 ```
 
+<br>
+
+## Q. 뉴스 클러스터링 (2018)
+
+```python
+import re
+
+def getElement(word):
+    elements = []
+    for ix in range(len(word)-1):
+        e = word[ix] + word[ix+1]
+        if e.isalpha(): 
+            while e in elements:
+                e += "+"
+            elements.append(e)
+    return set(elements)
+
+def solution(str1, str2):
+    str1, str2 = getElement(str1.lower()), getElement(str2.lower())
+    
+    try:
+        similarity = len(str1 & str2) / len(str1 | str2)
+        print(similarity)
+    except ZeroDivisionError:
+        similarity = 1
+    
+    return int(similarity * 65536)
+```
+
