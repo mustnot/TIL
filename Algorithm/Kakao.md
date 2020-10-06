@@ -302,3 +302,38 @@ def solution(str1, str2):
     return int(similarity * 65536)
 ```
 
+<br>
+
+## Q. 캐시 (2018)
+
+> Class 까지 만들 필요 없이 바로 짤 수 있었지만, 한 번 짜보고 싶었다.
+
+```python
+from collections import deque
+
+class LRU:
+    def __init__(self, cacheSize=1):
+        self.cacheList = deque(maxlen=cacheSize)
+        self.runtime = 0
+    
+    def get(self, value):
+        value = value.lower()
+        if value in self.cacheList:
+            self.cacheList.remove(value)
+            self.cacheList.appendleft(value)
+            self.runtime += 1
+        else:
+            self.cacheList.appendleft(value)
+            self.runtime += 5
+
+        return value
+
+def solution(cacheSize, cities):
+    lru = LRU(cacheSize=cacheSize)
+
+    for city in cities:
+        lru.get(city)
+    
+    return lru.runtime
+```
+
