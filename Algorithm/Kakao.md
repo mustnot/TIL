@@ -337,3 +337,52 @@ def solution(cacheSize, cities):
     return lru.runtime
 ```
 
+<br>
+
+## Q. 파일명 정렬 (2018)
+
+> Number 구하는데 너무 오랜 시간 걸렸다. 정규식을 너무 잘 짜려고 해도 시간 낭비일 수 있다.
+
+```python
+import re
+
+def solution(files):
+    split_files = []
+    for ix, file in enumerate(files):
+        head = re.search("(^[a-zA-Z\.\-\s]+)", file).group(0)
+        number = re.search("([0-9]+)", file).group(0)[:5]
+        split_files.append([ix] + [head, number] + [file])
+
+    return [v[-1] for v in sorted(split_files, key=lambda x: (x[1].lower(), int(x[2]), x[0]))]
+```
+
+<br>
+
+## Q. 압축 (2018)
+
+> 단순 구현 문제라 문제만 잘 읽는다면 푸는데 어려움은 없을 것 같다.
+
+```python
+import string
+
+def solution(msg):
+    answer = []
+
+    msg = [m for m in msg]
+    dictionary = [s for s in string.ascii_uppercase]
+
+    while msg:
+        wc = msg.pop(0)
+        while msg and wc in dictionary:
+            wc += msg.pop(0)
+        if wc in dictionary:
+            answer.append(dictionary.index(wc))
+        else:
+            w, c = wc[:-1], wc[-1]
+            msg = [_ for _ in c] + msg
+            answer.append(dictionary.index(w))
+            dictionary.append(w+c)
+        
+    return [_+1 for _ in answer]
+```
+
