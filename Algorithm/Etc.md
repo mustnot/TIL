@@ -231,3 +231,30 @@ def rotate_90_degree(array, clock=True):
 
     return True
 ```
+
+<br>
+
+## Q. n진수
+
+> 📌 기억
+
+```python
+# 10진수 -> n진수
+def n_decimal(number, n=2):
+    T = "0123456789ABCDEF"
+    q, r = divmod(number, n)
+    if q == 0:
+        return T[r]
+    else:
+        return n_decimal(q, n) + T[r]
+```
+
+<br>
+
+```python
+# n진수 -> 10진수
+answer = 0
+for idx, i in enumerate(three_reverse[::-1]):
+		answer += int(i) * ( n ** idx )
+```
+
