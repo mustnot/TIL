@@ -156,3 +156,24 @@ def solution(n, computers):
     return len(answer)
 ```
 
+<br>
+
+## 모든 경로 가져오기
+
+> graph는 list 대신에 set으로 만들어 연결된 노드에 대해 add 시키자.
+
+```python
+def bfs_paths(graph, start, goal):
+    queue = [(start, [start])]
+    result = []
+
+    while queue:
+        n, path = queue.pop(0)
+        if n == goal:
+            result.append(path)
+        else:
+            for m in graph[n] - set(path):
+                queue.append((m, path + [m]))
+    return result
+```
+
