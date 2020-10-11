@@ -80,3 +80,99 @@ $ docker run 0022caca0956
 Hello
 ```
 
+<br>
+
+<br>
+
+## Dockerizing a Node.js Web App
+
+> 📌 [Dockerizing a Node.js Web app - Node.js docs](https://nodejs.org/en/docs/guides/nodejs-docker-webapp/) 참고
+
+<br>
+
+### Node.js 앱 만들기 순서
+
+1. `package.json` 만들기 : 프로젝트의 정보와 프로젝트에서 사용 중인 패키지의 의존성을 관리
+2. `server.js` 만들기 : 프로젝트의 시작점(Entry Point)로서 가장 먼저 시작되는 파일 (꼭 `server.js` 일 필요는 없다)
+
+<br>
+
+**package.json**
+
+```json
+{
+  "name": "nodejs-docker-app",
+  "version": "1.0.0",
+  "description": "Node.js on Docker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+   "dependencies": {
+    "express": "^4.16.1"    
+  }
+}
+```
+
+* `express` : Javascript와 jQuery의 관계처럼 Node.js의 API를 단순화하고 새로운 기능을 추가하여 Node.js를 더 쉽고 유용하게 사용할 수 있게 해준다.
+
+<br>
+
+**server.js**
+
+```javascript
+const { response } = require('express');
+const express = require('express');
+
+// Constants
+const PORT = 8080;
+const HOST = "0.0.0.0";
+
+// App
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
+app.listen(PORT, HOST);
+console.log(`Running on http://${HOST}:${PORT}`);
+```
+
+<br>
+
+### Dockerfile 작성하기
+
+**dockerfile**
+
+```dockerfile
+FROM node:10
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+EXPOSE 8080
+CMD ["node", "server.js"]
+```
+
+* `WORKDIR /usr/src/app` : `/usr/src/app` 폴더로 디렉토리 이동 (cd와 동일)
+
+* `COPY package*.json ./` : `package.json` / `package-lock.json` 등을 현재 디렉토리 `./` 에 복사시킨다.
+
+* `EXPOSE 8080` : `server.js`에 작성했던 Port가 8080이기 때문에 8080으로 작성한다.
+
+<br>
+
+**.dockerignore**
+
+```dockerfile
+node_modules
+npm-debug.log
+```
+
+* `COPY . .` 명령어로 인해 디렉토리 내 모든 파일이 컨테이너 내부로 이동하는데, 만약 이미 `npm install` 명령어를 통해 의존성 라이브러리를 모두 설치했다면 그 용량이 꽤나 크기 때문에 docker container 만들기 전에 무시하도록 설정한다. 
