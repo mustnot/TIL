@@ -50,8 +50,6 @@ FAILED test_case.py::test_plus - assert 9 == 7
 
 `unittest`의 경우에는 실행시 해당 unittest 파일을 직접 실행시켰어야했는데, 이와 반대로 `pytest`는 사용하기 매우 쉬웠던 것 중 하나가 바로 `test_` 로 시작하는 파일은 모두 테스트 파일로 인식하여 테스트를 자동으로 진행한다는 점이다. 
 
-
-
 그리고 가장 좋았던 점 중 하나는 바로 assert 인데, 물론 unittest 역시 assert를 그냥 사용해도 좋다. (그렇지만 unittest를 쓰는 만큼 unittest의 method로 존재하는 assert 종류를 사용하는게 더 맞지 않을까 생각된다.) assert 사용하고 그 뒤에 조건은 조건문을 짜듯이 조건을 만들어도 되기 때문이다. (읽다보니 설명이 어려운 느낌인데, 예시를 보자!)
 
 ```python
