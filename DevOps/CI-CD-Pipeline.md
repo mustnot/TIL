@@ -58,9 +58,18 @@ CI/CD 파이프라인은 새 버전의 소프트웨어를 제공하기 위해 �
 
 #### Travis CI
 
-구동 환경 : Cloud
+**Travis CI** 는 **Github** 에서 진행되는 오픈소스 프로젝트를 위한 지속적인 통합(Continuous Integration) 서비스로, 2011년에 설립되어 2012년에 급성장하였으며, Ruby 언어만 지원하였으나 현재 대부분의 개발 언어를 지원하고 있다. Travis CI를 이용하면 Github repository에 있는 프로젝트를 특정 이벤트에 따라 자동으로 테스트, 빌드하거나 배포할 수 있다. Private Repository는 유로로 일정 금액을 지불하고 사용할 수 있다.
 
-가격 정책 : 
+**Travis CI의 흐름 요약**
+
+1. **Local Git :** 로컬에서 작성한 소스를 Github 저장소에 Push 한다.
+2. **Github Push : ** Github master(main) 저장소에 소스가 Push가 되면, Travis CI에게 소스가 Push 되었다는 것을 알려준다.
+3. **Travis CI :** 업데이트된 Github의 소스를 가져와 테스트를 진행한다.
+4. **AWS (Cloud) :** 테스트 코드 실행 후 테스트가 성공하면 AWS 같은 클라우드 환경에서 배포를 진행한다.
+
+
+
+**가격 정책** 
 
 * 무료 : OpenSouce 프로젝트만 무료
 * 유료 : 69 USD / Month, 한 번에 한 개의 Job만 수행
