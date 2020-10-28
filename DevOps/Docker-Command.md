@@ -4,6 +4,36 @@
 
 <br>
 
+## 설치하기
+
+> 매번 검색하기 너무나 귀찮다..
+
+### Ubuntu 18.04
+
+1. 필요한 패키지 설치
+
+```bash
+sudo apt update
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+sudo apt update
+```
+
+2. 도커 설치
+
+```bash
+sudo apt-get install docker-ce
+sudo systemctl status docker
+```
+
+3. Docker-Compose 설치
+
+```bash
+sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
 ## 명령어 정리
 
 1. `docker ps`
