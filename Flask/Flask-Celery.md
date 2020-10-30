@@ -106,7 +106,6 @@ class CustomTask(celery.Task):
 
 ```python
 # tasks.py
-# tasks.py
 from celery import Celery
 
 BROKER_URL = "redis://redis:6379/0"
@@ -115,4 +114,10 @@ CELERY_RESULT_BACKEND = "redis://redis:6379/0"
 celery = Celery("tasks", brokers=BROKER_URL, backend=CELERY_RESULT_BACKEND)
 
 custom_task = celery.register_task(CustomTask())
+```
+
+```python
+from tasks import custom_task
+
+custom_task.delay()
 ```
