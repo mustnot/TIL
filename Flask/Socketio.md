@@ -96,6 +96,14 @@ if __name__ == "__main__":
 
 <br>
 
+### Receiving Messages
+
+Socket.IO에서는 클라이언트와 서버 간 Event로 수신 받는다. (작성중 ....)
+
+
+
+
+
 
 
 ## Error Log
