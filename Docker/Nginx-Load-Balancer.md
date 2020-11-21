@@ -42,6 +42,10 @@ if __name__ == "__main__":
 
 <br>
 
+**uWSGI**
+
+> uWGI 설정 관련해서 정리할 필요성을 느껴 다음에 정리 예정
+
 ```ini
 [uwsgi]
 uid=root
@@ -62,9 +66,6 @@ enable-threads=true
 chmod-socket=666
 buffer-size=32768
 ```
-
-* `http=:5000`
-* `http-websockets=true`
 
 
 
