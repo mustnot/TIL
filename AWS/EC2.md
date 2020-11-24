@@ -68,43 +68,70 @@ EC2 인스턴스 유형이 여러 가지 사양으로 나눠진 것과 같이 �
 
 ## 가상 스토리지를 제공하는 EBS
 
-EBS(Elastic Block Store)는 E
+EBS(Elastic Block Store)는 EC2 인스턴스에 장착하여 사용할 수 있는 가상 저장 장치로 EBS는 EC2 인스턴스에서 제공하는 기본 용량보다 더 사용해야 할 때, 운영체제를 중단시키지 않고 용량을 자유롭게 늘리고 싶을 때, 영구적인 데이터 보관이 필요할 때, RAID 등 고급 기능이 필요할 때 사용된다.
 
+EBS는 EC2에 설치된 OS에서 그냥 일반적인 하드디스크나 SSD처럼 인식된다. 원하는 크기로 만들 수 있고, 성능(IOPS) 또한, 원하는 수치로 설정할 수 있다. 그리고 사용자가 삭제하기 전까지는 데이터가 안전하게 유지된다.
 
+**EBS 기본 개념**
 
+* 볼륨 (Volume) : EBS의 가장 기본적인 형태로 OS에서 바로 사용 가능한 형태
+* 이미지 (Image) : AMI(Amazon Machine Image)를 줄여 부르는 말로 OS가 설치된 형태로 해당 AMI로 EC2 인스턴스를 생성한다.
+* 스냅샷 (Snapshot) : EBS 볼륨의 특정 시점을 그대로 복사해 저장한 파일을 뜻하며, 이 스냅샷을 이용하여 EBS 볼륨과 AMI를 생성할 수 있다.
+* IOPS (Input/Output Opeation Per Second) : 저장 장치의 성능 측정 단위로 최소 100 IOPS에서 4,000 IOPS까지 설정할 수 있다.
 
+EC2 인스턴스를 생성할 때 기본적으로 OS가 설치된 EBS 볼륨이 함께 생성된다.
 
+<br>
 
+### EBS 볼륨 생성하기
 
+1. EC2 왼쪽 메뉴에서 Elastic Block Store -> 볼륨 (Volumes) 선택
 
+2. 볼륨 생성 (Create Volume)
+   * 볼륨 유형(Type) : EBS 볼륨 형태 (📌 gp : General Purpose)
+   * 크기 (Size) : EBS 볼륨 크기
+   * IOPS : gp로 선택한 경우 IOPS를 설정할 수 없다. Type을 Provisioned IOPS로 선택해야 설정할 수 있다.
+   * 가용 영역 (Availability Zone) : 볼륨이 생성될 가용 영역으로 EC2 인스턴스가 생성된 가용 영역과 같은 곳에 위치해야 EC2 인스턴스에서 사용할 수 있다.
+   * 스냅샷 ID : 생성해 놓은 EBS 스냅샷이 있다면 여기서 선택 가능하다.
+   * 암호화 (Encryption) : 볼륨 암호화 옵션
+   
+3. 볼륨 연결 (Attach Volume)
 
+4. 볼륨 포맷하기 : `sudo mkfs -t ext4 /dev/sdf`
 
+   * Ubuntu 20.04 의 경우 `/dev/xvdf ~ /dev/xvdp` 이다.
 
+   ```bash
+   $ sudo mkfs -t ext4 /dev/xvdf
+   mke2fs 1.45.5 (07-Jan-2020)
+   Creating filesystem with 2621440 4k blocks and 655360 inodes
+   Filesystem UUID: e753bbf9-894e-4fcc-b068-52379a1ae28e
+   Superblock backups stored on blocks:
+   	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
+   
+   Allocating group tables: done
+   Writing inode tables: done
+   Creating journal (16384 blocks): done
+   Writing superblocks and filesystem accounting information: done
+   ```
 
+5. 볼륨 마운트하기 : `sudo mount /dev/sdf /mnt`
 
+6. 볼륨 언마운트하기 : `sudo umount /mnt`
 
+<br>
 
+## EBS 스냅샷 활용하기
 
+스냅샷이란 EBS 볼륨의 전체 내용 중 특정 시점을 파일로 저장한 형태로 EBS 볼륨의 백업 파일의 성격을 지니고 있다.
 
+EBS 스냅샷은 다양한 용도로 활용 가능
 
+* 스냅샷으로 EBS 볼륨 생성 (다른 가용 영역에 생성 가능)
+* 스냅샷으로 AMI 생성
+* 스냅샷을 다른 리전으로 복사
 
+<br>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### EBS 스냅샷 생성하기
 
