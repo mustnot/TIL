@@ -23,7 +23,7 @@ sudo apt update
 2. 도커 설치
 
 ```bash
-sudo apt-get install docker-ce
+sudo apt-get install docker-ce -y
 sudo systemctl status docker
 ```
 
@@ -33,6 +33,8 @@ sudo systemctl status docker
 sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 ```
+
+<br>
 
 ## 명령어 정리
 
@@ -104,44 +106,17 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 <br>
 
-## 도커 컨테이너의 생명 주기
+## Etc.
 
-![CE9BBFBE-7F12-4B1C-B344-262C1080264A](https://user-images.githubusercontent.com/52126612/94931097-4c1d6380-0502-11eb-99f0-03774eb2b9c1.png)
+### Timezone 맞추기
 
-<br>
+```bash
+$ sudo ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+```
 
-### 이미지로 컨테이너 만들기
+```bash
+$ docker run ... -v /etc/localtime:/etc/localtime:ro
+```
 
-> ℹ️ 이미지는 응용 프로그램을 실행하는데 필요한 **<u>모든 것</u>**을 포함하고 있다.
 
-1. 컨테이너가 시작 될 때 실행되는 명령어 ex) run [프로그램]
-2. 파일 스냅샷 ex) 컨테이너에 실행될 [프로그램]의 파일 혹은 스냅샷
-   ( * 파일 스냅샷은 디렉토리나 파일을 카피한 것으로 이해하면 쉽다. )
 
-<br>
-
-### docker stop vs kill
-
-두 명령어 모두 기본적으로 실행중인 컨테이너를 중지시킨다는 공통점을 가지고 있다.
-
-* `docker stop [CONTAINER ID or NAME]` : Gracefully 하게 컨테이너를 중지시켜, 그 동안 하고 있던 작업들을 모두 완료하고 컨테이너를 중지시킨다.
-* `docker kill [CONTAINER ID or NAME]` : Stop과 달리 바로 컨테이너를 중지시킨다.
-
-<br>
-
-### 실행중인 컨테이너에 명령어 전달
-
-* `docker exec [CONTAINER ID or NAME] [COMMAND]` : 실행 중인 컨테이너에 명령어 전달 가능
-  * `docker run [COMMAND]` 와 차이점은 이미 실행 중인 컨테이너에 명령어 전달이 가능하다는 점
-
-<br>
-
-### 레디스를 이용한 컨테이너 이해
-
-1. **레디스 서버**(redis) 작동
-   * `docker run redis`
-2. **레디스 클라이언트**(redis-cli) 실행 후 명령어를 **레디스 서버**에 전달
-   * `docker exec -it [REDIS CONTAINER ID] redis-cli`
-3. 레디스 클라이언트에 키-밸류로 데이터 넣고, 가져와보기
-   * `set key1 hello`
-   * `get key1`
