@@ -2,7 +2,7 @@
 
 <br>
 
-## Variables & inferred typing
+## Variables & inference typing
 
 ### Variable
 
